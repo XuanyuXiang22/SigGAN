@@ -6,6 +6,7 @@ from util.utils import print_loss, save_networks
 
 if __name__ == '__main__':
     opt = Option().get_opt()   # 获得超参数
+    assert opt.mode == "train", "It is not train mode!"
     loader = get_loader(opt)   # 获得dataloader
     model = SigGAN(opt)        # 获得网络模型，损失函数，参数更新器，学习率优化器
 

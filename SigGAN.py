@@ -14,9 +14,9 @@ class SigGAN:
         self.optimizers = []
 
         self.netG_A = init_net(Generator(2), self.opt.gpu_ids)
-        self.netG_B = init_net(Generator(2), self.opt.gpu_ids)
 
         if self.opt.mode == "train":
+            self.netG_B = init_net(Generator(2), self.opt.gpu_ids)
             self.netD_A = init_net(Discriminator(2), self.opt.gpu_ids)
             self.netD_B = init_net(Discriminator(2), self.opt.gpu_ids)
             # 缓存池trick
@@ -37,13 +37,14 @@ class SigGAN:
 
     def forward(self, x):
         self.real_A = x["A"].to(self.device)
-        self.real_B = x["B"].to(self.device)
         self.image_paths = x["A_paths"]
-
         self.fake_B = self.netG_A(self.real_A)  # G_A(A)
-        self.rec_A = self.netG_B(self.fake_B)  # G_B(G_A(A))
-        self.fake_A = self.netG_B(self.real_B)  # G_B(B)
-        self.rec_B = self.netG_A(self.fake_A)  # G_A(G_B(B))
+
+        if self.opt.mode == "train":
+            self.real_B = x["B"].to(self.device)
+            self.rec_A = self.netG_B(self.fake_B)   # G_B(G_A(A))
+            self.fake_A = self.netG_B(self.real_B)  # G_B(B)
+            self.rec_B = self.netG_A(self.fake_A)   # G_A(G_B(B))
 
     def backward_G(self):
         self.loss_G_A = self.criterionGAN(self.netD_A(self.fake_B), True)

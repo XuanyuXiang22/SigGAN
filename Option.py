@@ -9,7 +9,8 @@ class Option:
 		self.parser.add_argument('--name', type=str, default='exp')
 		self.parser.add_argument('--dataroot', required=True)
 		self.parser.add_argument('--checkpoints_dir', type=str, default='./checkpoints')
-		self.parser.add_argument('--mode', type=str, required=True, choices=['train', 'val', 'test'])
+		self.parser.add_argument('--results_dir', type=str, default='./results')
+		self.parser.add_argument('--mode', type=str, required=True, choices=['train', 'test'])
 
 		self.parser.add_argument('--gpu_ids', type=str, default='0')
 		self.parser.add_argument('--n_epochs', type=int, default=100)

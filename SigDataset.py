@@ -11,7 +11,7 @@ class SigDataset(Dataset):
         self.dir_A = os.path.join(opt.dataroot, opt.mode + 'A')
         self.A_paths = self.makePaths(self.dir_A)
 
-        if self.opt.mode == "train" or self.opt.mode == "val":
+        if self.opt.mode == "train":
             self.dir_B = os.path.join(opt.dataroot, opt.mode + 'B')
             self.B_paths = self.makePaths(self.dir_B)
 
